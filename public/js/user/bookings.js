@@ -43,19 +43,56 @@ function displayBookings(bookings) {
         return;
     }
 
-    const bookingsHtml = bookings.map(booking => `
-        <div class="booking-item">
-            <div class="movie-info">
-                <h3>${booking.movie.title}</h3>
-                <p><strong>Theater:</strong> ${booking.theater.name} - ${booking.theater.location}</p>
-                <p><strong>Show Time:</strong> ${booking.showTime}</p>
-                <p><strong>Seats:</strong> ${booking.seats.map(seat => seat.seatNumber).join(', ')}</p>
-                <p><strong>Total Amount:</strong> $${booking.totalAmount}</p>
-                <p><strong>Status:</strong> <span class="status ${booking.status}">${booking.status}</span></p>
-                <p><strong>Booking Date:</strong> ${new Date(booking.bookingDate).toLocaleString()}</p>
+    const bookingsHtml = bookings.map(booking => {
+        const movieTitle = booking.movie ? booking.movie.title : 'Unknown Movie';
+        const theaterName = booking.theater ? booking.theater.name : 'Unknown Theater';
+        const theaterLocation = booking.theater ? booking.theater.location : 'Unknown Location';
+        const showTime = booking.showTime || 'N/A';
+        const seats = booking.seats && Array.isArray(booking.seats)
+            ? booking.seats.map(seat => seat.seatNumber).join(', ')
+            : 'N/A';
+        const totalAmount = booking.totalAmount || 'N/A';
+        const status = booking.status || 'N/A';
+        const bookingDate = booking.bookingDate
+            ? new Date(booking.bookingDate).toLocaleString()
+            : 'N/A';
+
+        return `
+            <div class="booking-item">
+                <div class="movie-info">
+                    <h3>${movieTitle}</h3>
+                    <p><strong>Theater:</strong> ${theaterName} - ${theaterLocation}</p>
+                    <p><strong>Show Time:</strong> ${showTime}</p>
+                    <p><strong>Seats:</strong> ${seats}</p>
+                    <p><strong>Total Amount:</strong> $${totalAmount}</p>
+                    <p><strong>Status:</strong> <span class="status ${status}">${status}</span></p>
+                    <p><strong>Booking Date:</strong> ${bookingDate}</p>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 
     document.getElementById('bookingsList').innerHTML = bookingsHtml;
-} 
+}
+
+const applyFilters = async () => {
+    const search = searchInput.value;
+    const genre = genreFilter.value;
+    const location = locationFilter.value;
+
+    console.log('Applying filters:', { search, genre, location });
+
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/movies?search=${search}&genre=${genre}&location=${location}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const movies = await response.json();
+        displayMovies(movies);
+    } catch (error) {
+        console.error('Error applying filters:', error);
+    }
+}; 

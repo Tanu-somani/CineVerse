@@ -16,7 +16,6 @@
             </div>
             <div class="nav-links">
                 <a href="#" class="active">Movies</a>
-                
             </div>
             <div class="auth-buttons">
                 <button id="loginBtn" class="btn btn-outline">Login</button>
@@ -25,30 +24,39 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Auto-scrolling Banner -->
     <section class="hero">
-        <div class="hero-content">
-            <h1>Book Your Movie Tickets</h1>
-            <p>Watch the latest movies in theaters near you</p>
+        <div class="banner-slider">
+            <div class="banner-slide active">
+                <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/873f0c84162849.5d53ccc0d14fe.jpg">
+            </div>
+            <div class="banner-slide">
+                <img src="https://www.koimoi.com/wp-content/new-galleries/2019/08/mission-mangal-movie-review-1.jpg" alt="Banner 2">
+            </div>
+            <div class="banner-slide">
+                <img src="https://wallpaperaccess.com/full/1494461.jpg" alt="Banner 3">
+            </div>
+        </div>
+        <div class="banner-controls">
+            <button class="banner-prev"><i class="fas fa-chevron-left"></i></button>
+            <button class="banner-next"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
             <div class="search-box">
-                <input type="text" placeholder="Search for movies.....">
-                <button class="search-btn"><i class="fas fa-search"></i></button>
+                <input type="text" id="movieSearch" placeholder="Search for movies.....">
+                <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i></button>
             </div>
         </div>
     </section>
 
-    <!-- Recommended Movies -->
-    <section class="recommended-movies">
-        <h2></h2>
-        <div class="movie-slider" id="recommendedMovies">
-            <!-- Movies will be loaded dynamically -->
-        </div>
-    </section>
-
-    <!-- Upcoming Movies -->
-    <section class="upcoming-movies">
-        <h2>Available Movies</h2>
-        <div class="movie-slider" id="upcomingMovies">
+    <!-- All Movies Section -->
+    <section class="all-movies">
+        <h2>All Movies</h2>
+        <div class="movie-grid" id="allMovies">
             <!-- Movies will be loaded dynamically -->
         </div>
     </section>

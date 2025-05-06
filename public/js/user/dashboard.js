@@ -141,7 +141,9 @@ async function openBookingModal(movieId) {
         alert('Error loading movie details');
     }
 }
-
+window.addEventListener("load", function() {
+    document.getElementById("target-section").scrollIntoView({ behavior: "smooth" });
+  });
 function updateShowTimes() {
     const theaterSelect = document.getElementById('theaterSelect');
     const showTimeSelect = document.getElementById('showTimeSelect');

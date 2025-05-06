@@ -7,7 +7,7 @@ const Movie = require('../models/Movie');
 // Get all movies (for users)
 router.get('/', async (req, res) => {
     try {
-        const { genre, location, search } = req.query;
+        const { genre, location } = req.query;
         let query = {};
 
         if (genre) {
@@ -18,14 +18,28 @@ router.get('/', async (req, res) => {
             query['theaters.location'] = location;
         }
 
-        if (search) {
-            query.$or = [
-                { title: { $regex: search, $options: 'i' } },
-                { description: { $regex: search, $options: 'i' } }
-            ];
+        const movies = await Movie.find(query);
+        res.json(movies);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Search movies
+router.get('/search', async (req, res) => {
+    try {
+        const { q } = req.query;
+        if (!q) {
+            return res.status(400).json({ message: 'Search query is required' });
         }
 
-        const movies = await Movie.find(query);
+        const movies = await Movie.find({
+            $or: [
+                { title: { $regex: q, $options: 'i' } },
+                { description: { $regex: q, $options: 'i' } }
+            ]
+        });
         res.json(movies);
     } catch (error) {
         console.error(error);
